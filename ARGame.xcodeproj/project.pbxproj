@@ -1,0 +1,592 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AE78CE7F29C034530042D8EB /* ARGameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE78CE7E29C034530042D8EB /* ARGameApp.swift */; };
+		AE78CE8129C034530042D8EB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE78CE8029C034530042D8EB /* ContentView.swift */; };
+		AE78CE8329C034550042D8EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE78CE8229C034550042D8EB /* Assets.xcassets */; };
+		AE78CE8629C034550042D8EB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE78CE8529C034550042D8EB /* Preview Assets.xcassets */; };
+		AE78CE9029C034550042D8EB /* ARGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE78CE8F29C034550042D8EB /* ARGameTests.swift */; };
+		AE78CE9A29C034550042D8EB /* ARGameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE78CE9929C034550042D8EB /* ARGameUITests.swift */; };
+		AE78CE9C29C034550042D8EB /* ARGameUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE78CE9B29C034550042D8EB /* ARGameUITestsLaunchTests.swift */; };
+		AE78CEA929C0347F0042D8EB /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE78CEA829C0347F0042D8EB /* GameView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AE78CE8C29C034550042D8EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE78CE7329C034530042D8EB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AE78CE7A29C034530042D8EB;
+			remoteInfo = ARGame;
+		};
+		AE78CE9629C034550042D8EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE78CE7329C034530042D8EB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AE78CE7A29C034530042D8EB;
+			remoteInfo = ARGame;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AE78CE7B29C034530042D8EB /* ARGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE78CE7E29C034530042D8EB /* ARGameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameApp.swift; sourceTree = "<group>"; };
+		AE78CE8029C034530042D8EB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AE78CE8229C034550042D8EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AE78CE8529C034550042D8EB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AE78CE8B29C034550042D8EB /* ARGameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARGameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE78CE8F29C034550042D8EB /* ARGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameTests.swift; sourceTree = "<group>"; };
+		AE78CE9529C034550042D8EB /* ARGameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARGameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE78CE9929C034550042D8EB /* ARGameUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameUITests.swift; sourceTree = "<group>"; };
+		AE78CE9B29C034550042D8EB /* ARGameUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		AE78CEA829C0347F0042D8EB /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AE78CE7829C034530042D8EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE78CE8829C034550042D8EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE78CE9229C034550042D8EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AE78CE7229C034530042D8EB = {
+			isa = PBXGroup;
+			children = (
+				AE78CE7D29C034530042D8EB /* ARGame */,
+				AE78CE8E29C034550042D8EB /* ARGameTests */,
+				AE78CE9829C034550042D8EB /* ARGameUITests */,
+				AE78CE7C29C034530042D8EB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AE78CE7C29C034530042D8EB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE78CE7B29C034530042D8EB /* ARGame.app */,
+				AE78CE8B29C034550042D8EB /* ARGameTests.xctest */,
+				AE78CE9529C034550042D8EB /* ARGameUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AE78CE7D29C034530042D8EB /* ARGame */ = {
+			isa = PBXGroup;
+			children = (
+				AE78CE7E29C034530042D8EB /* ARGameApp.swift */,
+				AE78CE8029C034530042D8EB /* ContentView.swift */,
+				AE78CEA829C0347F0042D8EB /* GameView.swift */,
+				AE78CE8229C034550042D8EB /* Assets.xcassets */,
+				AE78CE8429C034550042D8EB /* Preview Content */,
+			);
+			path = ARGame;
+			sourceTree = "<group>";
+		};
+		AE78CE8429C034550042D8EB /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				AE78CE8529C034550042D8EB /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AE78CE8E29C034550042D8EB /* ARGameTests */ = {
+			isa = PBXGroup;
+			children = (
+				AE78CE8F29C034550042D8EB /* ARGameTests.swift */,
+			);
+			path = ARGameTests;
+			sourceTree = "<group>";
+		};
+		AE78CE9829C034550042D8EB /* ARGameUITests */ = {
+			isa = PBXGroup;
+			children = (
+				AE78CE9929C034550042D8EB /* ARGameUITests.swift */,
+				AE78CE9B29C034550042D8EB /* ARGameUITestsLaunchTests.swift */,
+			);
+			path = ARGameUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AE78CE7A29C034530042D8EB /* ARGame */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE78CE9F29C034550042D8EB /* Build configuration list for PBXNativeTarget "ARGame" */;
+			buildPhases = (
+				AE78CE7729C034530042D8EB /* Sources */,
+				AE78CE7829C034530042D8EB /* Frameworks */,
+				AE78CE7929C034530042D8EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ARGame;
+			productName = ARGame;
+			productReference = AE78CE7B29C034530042D8EB /* ARGame.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AE78CE8A29C034550042D8EB /* ARGameTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE78CEA229C034550042D8EB /* Build configuration list for PBXNativeTarget "ARGameTests" */;
+			buildPhases = (
+				AE78CE8729C034550042D8EB /* Sources */,
+				AE78CE8829C034550042D8EB /* Frameworks */,
+				AE78CE8929C034550042D8EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AE78CE8D29C034550042D8EB /* PBXTargetDependency */,
+			);
+			name = ARGameTests;
+			productName = ARGameTests;
+			productReference = AE78CE8B29C034550042D8EB /* ARGameTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		AE78CE9429C034550042D8EB /* ARGameUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE78CEA529C034550042D8EB /* Build configuration list for PBXNativeTarget "ARGameUITests" */;
+			buildPhases = (
+				AE78CE9129C034550042D8EB /* Sources */,
+				AE78CE9229C034550042D8EB /* Frameworks */,
+				AE78CE9329C034550042D8EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AE78CE9729C034550042D8EB /* PBXTargetDependency */,
+			);
+			name = ARGameUITests;
+			productName = ARGameUITests;
+			productReference = AE78CE9529C034550042D8EB /* ARGameUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AE78CE7329C034530042D8EB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					AE78CE7A29C034530042D8EB = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					AE78CE8A29C034550042D8EB = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = AE78CE7A29C034530042D8EB;
+					};
+					AE78CE9429C034550042D8EB = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = AE78CE7A29C034530042D8EB;
+					};
+				};
+			};
+			buildConfigurationList = AE78CE7629C034530042D8EB /* Build configuration list for PBXProject "ARGame" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AE78CE7229C034530042D8EB;
+			productRefGroup = AE78CE7C29C034530042D8EB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AE78CE7A29C034530042D8EB /* ARGame */,
+				AE78CE8A29C034550042D8EB /* ARGameTests */,
+				AE78CE9429C034550042D8EB /* ARGameUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AE78CE7929C034530042D8EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE78CE8629C034550042D8EB /* Preview Assets.xcassets in Resources */,
+				AE78CE8329C034550042D8EB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE78CE8929C034550042D8EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE78CE9329C034550042D8EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AE78CE7729C034530042D8EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE78CE8129C034530042D8EB /* ContentView.swift in Sources */,
+				AE78CEA929C0347F0042D8EB /* GameView.swift in Sources */,
+				AE78CE7F29C034530042D8EB /* ARGameApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE78CE8729C034550042D8EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE78CE9029C034550042D8EB /* ARGameTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE78CE9129C034550042D8EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE78CE9A29C034550042D8EB /* ARGameUITests.swift in Sources */,
+				AE78CE9C29C034550042D8EB /* ARGameUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AE78CE8D29C034550042D8EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AE78CE7A29C034530042D8EB /* ARGame */;
+			targetProxy = AE78CE8C29C034550042D8EB /* PBXContainerItemProxy */;
+		};
+		AE78CE9729C034550042D8EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AE78CE7A29C034530042D8EB /* ARGame */;
+			targetProxy = AE78CE9629C034550042D8EB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		AE78CE9D29C034550042D8EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AE78CE9E29C034550042D8EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AE78CEA029C034550042D8EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ARGame/Preview Content\"";
+				DEVELOPMENT_TEAM = XAUVSTMBH8;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.henryli.ARGame;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AE78CEA129C034550042D8EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ARGame/Preview Content\"";
+				DEVELOPMENT_TEAM = XAUVSTMBH8;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.henryli.ARGame;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		AE78CEA329C034550042D8EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XAUVSTMBH8;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.henryli.ARGameTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ARGame.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ARGame";
+			};
+			name = Debug;
+		};
+		AE78CEA429C034550042D8EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XAUVSTMBH8;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.henryli.ARGameTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ARGame.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ARGame";
+			};
+			name = Release;
+		};
+		AE78CEA629C034550042D8EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XAUVSTMBH8;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.henryli.ARGameUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ARGame;
+			};
+			name = Debug;
+		};
+		AE78CEA729C034550042D8EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XAUVSTMBH8;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.henryli.ARGameUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ARGame;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AE78CE7629C034530042D8EB /* Build configuration list for PBXProject "ARGame" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE78CE9D29C034550042D8EB /* Debug */,
+				AE78CE9E29C034550042D8EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE78CE9F29C034550042D8EB /* Build configuration list for PBXNativeTarget "ARGame" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE78CEA029C034550042D8EB /* Debug */,
+				AE78CEA129C034550042D8EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE78CEA229C034550042D8EB /* Build configuration list for PBXNativeTarget "ARGameTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE78CEA329C034550042D8EB /* Debug */,
+				AE78CEA429C034550042D8EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE78CEA529C034550042D8EB /* Build configuration list for PBXNativeTarget "ARGameUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE78CEA629C034550042D8EB /* Debug */,
+				AE78CEA729C034550042D8EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AE78CE7329C034530042D8EB /* Project object */;
+}
