@@ -12,15 +12,16 @@ import RealityKit
 import Combine
 
 class Utilities {
-    static let spacing: Float = 0.25
-    static let moveDistance: Float = 1
-    static let moveDistanceVertical: Float = 1/4
+    static let spacing: Float = 0.02
+    static let moveDistance: Float = 0.05
+    static let moveDistanceVertical: Float = 0.025
+    static let invaderSpeed: Float = 0.1
     
     static func getTextMesh(for string: String) -> MeshResource {
         return MeshResource.generateText(
                               string,
-              extrusionDepth: 0.01,
-                        font: .init(name: "Helvetica", size: 0.15)!,
+              extrusionDepth: 0.001,
+                        font: .init(name: "Helvetica", size: 0.015)!,
               containerFrame: .zero,
                    alignment: .center,
                lineBreakMode: .byCharWrapping)
@@ -42,16 +43,18 @@ class InvaderMotion: System {
             guard let model = entity as? ModelEntity else { return }
             
             guard let invader = model.components[InvaderComponent.self] as? InvaderComponent else { return }
+            
+            if !invader.doesMove { return }
         
             let xlimit = invader.limits[invader.moveState].x
             
             if invader.moveState == 0 && xlimit > 0 && model.position.x > xlimit{
-                model.position.x = xlimit - Float(context.deltaTime)
+                model.position.x = xlimit - Utilities.invaderSpeed * Float(context.deltaTime)
                 invader.moveState = (invader.moveState + 1) % stateCount
                 model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
             }
             else if invader.moveState == 2 && xlimit < 0 && model.position.x < xlimit {
-                model.position.x = xlimit + Float(context.deltaTime)
+                model.position.x = xlimit + Utilities.invaderSpeed * Float(context.deltaTime)
                 invader.moveState = (invader.moveState + 1) % stateCount
                 model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
             }
@@ -65,8 +68,8 @@ class InvaderMotion: System {
                 invader.limits[3].y -= Utilities.moveDistanceVertical
             }
             else {
-                model.position.x += Float(context.deltaTime) * moves[invader.moveState].x
-                model.position.y += Float(context.deltaTime) * moves[invader.moveState].y
+                model.position.x += Utilities.invaderSpeed * Float(context.deltaTime) * moves[invader.moveState].x
+                model.position.y += Utilities.invaderSpeed * Float(context.deltaTime) * moves[invader.moveState].y
             }
         }
     }
@@ -75,6 +78,7 @@ class InvaderMotion: System {
 class InvaderComponent: Component {
     var limits : [(x: Float, y: Float)]
     var moveState = 0
+    var doesMove = false
     
     init(limits: [(x: Float, y: Float)]) {
         self.limits = limits
@@ -88,6 +92,8 @@ class InvaderComponent: Component {
 class SpatialView: ARView {
     var updateSub: Cancellable!
     var cubeEntity, entity: ModelEntity?
+    var boardScene: Gameboard.Scene?
+    var gameAnchor: AnchorEntity?
     
     required init(frame: CGRect) {
         super.init(frame: frame)
@@ -104,6 +110,23 @@ class SpatialView: ARView {
     func setup() {
         registerComponents()
 //        doCubeSetup()
+        boardScene = try! Gameboard.loadScene()
+//        scene.addAnchor(board)
+        scene.anchors.append(boardScene!)
+        
+#if targetEnvironment(simulator)
+        cameraMode = .nonAR
+        let cameraEntity = PerspectiveCamera()
+//        cameraEntity.camera.fieldOfViewInDegrees = 140 //Custom field of view
+        let cameraAnchor = AnchorEntity(world: .zero)
+        cameraAnchor.addChild(cameraEntity)
+               
+        scene.addAnchor(cameraAnchor)
+        cameraEntity.look(at: SIMD3(repeating: 0), from: SIMD3(0,1,0), relativeTo: nil)
+        gameAnchor = AnchorEntity()
+#else
+        setupARConfiguration()
+#endif
         
         doECSTestSetup()
     }
@@ -112,19 +135,48 @@ class SpatialView: ARView {
         InvaderComponent.registerComponent()
     }
     
+    func setupARConfiguration() {
+        let config = ARWorldTrackingConfiguration()
+        config.planeDetection = [.horizontal, .vertical]
+        config.environmentTexturing = .automatic
+        
+        if ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh){
+            config.sceneReconstruction = .mesh
+        }
+        
+        session.run(config)
+        
+        gameAnchor = AnchorEntity(.plane(.horizontal, classification: .table, minimumBounds: SIMD2(repeating: 0)))
+    }
+    
     func doECSTestSetup() {
         InvaderMotion.registerSystem()
-        let anchor = AnchorEntity()
-        
+
         let xspacing = Utilities.spacing
         let yspacing = xspacing
         
         backgroundColor = .black
         
-        for row in 1...3 {
-            makeInvaderRow(onto: anchor, at: Float(row) * yspacing, withColumns: 5, withSpacing: xspacing)
+        for row in 1...1 {
+            makeInvaderRow(onto: gameAnchor!, at: Float(row) * yspacing, withColumns: 9, withSpacing: xspacing)
         }
-        scene.addAnchor(anchor)
+        
+        gameAnchor!.setParent(boardScene!)
+        gameAnchor!.transform.rotation = simd_quatf(angle: -.pi/2, axis: [1,0,0])
+        gameAnchor!.position.z -= 0.2
+//        boardScene?.scene?.addAnchor(anchor)
+        
+        setInvader(shouldMove: true)
+    }
+    
+    func setInvader(shouldMove: Bool) {
+        scene.performQuery(InvaderMotion.query).forEach { entity in
+            guard let model = entity as? ModelEntity else { return }
+            
+            guard let invader = model.components[InvaderComponent.self] as? InvaderComponent else { return }
+            
+            invader.doesMove = shouldMove
+        }
     }
     
     func makeInvaderRow(onto anchor: AnchorEntity, at y: Float, withColumns cols: Int, withSpacing spacing: Float) {
@@ -142,16 +194,19 @@ class SpatialView: ARView {
                             materials: [UnlitMaterial()])
             entity?.position.x = starting + Float(index) * spacing
             entity?.position.y = y
+            entity?.transform.rotation = simd_quatf(angle: .pi/4, axis: [1,0,0])
             entity?.setParent(anchor)
             entity?.name = "Prim\(currNum)"
             
             
-            entity?.components[InvaderComponent.self] =
-                InvaderComponent(limits: generateLimits(
-                    x: entity!.position.x,
-                    y: y,
-                    limitValue: Utilities.moveDistance,
-                    limitValueVertical: Utilities.moveDistanceVertical))
+            let limits: [(Float, Float)] = generateLimits(
+                x: entity!.position.x,
+                y: y,
+                limitValue: Utilities.moveDistance,
+                limitValueVertical: Utilities.moveDistanceVertical)
+            print(limits)
+            print(entity!.position.x)
+            entity?.components[InvaderComponent.self] = InvaderComponent(limits: limits)
         }
     }
     
