@@ -12,10 +12,9 @@ import RealityKit
 import Combine
 
 class Utilities {
-    static let spacing: Float = 0.02
-    static let moveDistance: Float = 0.05
+    static let spacing: Float = 0.015
+    static let moveDistance: Float = 0.07
     static let moveDistanceVertical: Float = 0.025
-    static let invaderSpeed: Float = 0.1
     
     static func getTextMesh(for string: String) -> MeshResource {
         return MeshResource.generateText(
@@ -35,9 +34,13 @@ class InvaderMotion: System {
         print("System is activated!")
     }
     
-    let moves: [(x: Float, y: Float)] = [(1,0), (0,-1), (-1,0), (0,-1)]
+    let moves: [(x: Float, z: Float)] = [(1,0), (0,1), (-1,0), (0,1)]
     let stateCount = 4
     
+    func isValue(_ a: Float, closeTo b: Float, withTolerance tol: Float = 1e-6) -> Bool {
+        return abs(a-b) < tol
+    }
+        
     func update(context: SceneUpdateContext) {
         context.scene.performQuery(Self.query).forEach { entity in
             guard let model = entity as? ModelEntity else { return }
@@ -48,39 +51,41 @@ class InvaderMotion: System {
         
             let xlimit = invader.limits[invader.moveState].x
             
-            if invader.moveState == 0 && xlimit > 0 && model.position.x > xlimit{
-                model.position.x = xlimit - Utilities.invaderSpeed * Float(context.deltaTime)
+            if invader.moveState == 0 && xlimit > 0 && model.position.x > xlimit {
+                model.position.x = xlimit - invader.speed * Float(context.deltaTime)
                 invader.moveState = (invader.moveState + 1) % stateCount
                 model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
             }
             else if invader.moveState == 2 && xlimit < 0 && model.position.x < xlimit {
-                model.position.x = xlimit + Utilities.invaderSpeed * Float(context.deltaTime)
+                model.position.x = xlimit + invader.speed * Float(context.deltaTime)
                 invader.moveState = (invader.moveState + 1) % stateCount
                 model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
             }
-            else if (invader.moveState == 1 || invader.moveState == 3) && model.position.y < invader.limits[invader.moveState].y {
+            else if (invader.moveState == 1 || invader.moveState == 3) && model.position.z > invader.limits[invader.moveState].z {
 //                print("\(invader.moveState) \(invader.limits[invader.moveState]) pos (\(model.position.x), \(model.position.y)), move (\(moves[invader.moveState]) ")
 //                model.position.y -= Float(context.deltaTime) * moves[invader.moveState].y
                 invader.moveState = (invader.moveState + 1) % stateCount
                 model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
 
-                invader.limits[1].y -= Utilities.moveDistanceVertical
-                invader.limits[3].y -= Utilities.moveDistanceVertical
+                invader.limits[1].z += Utilities.moveDistanceVertical
+                invader.limits[3].z += Utilities.moveDistanceVertical
+                invader.speed = min(invader.speed + 0.01, 0.1)
             }
             else {
-                model.position.x += Utilities.invaderSpeed * Float(context.deltaTime) * moves[invader.moveState].x
-                model.position.y += Utilities.invaderSpeed * Float(context.deltaTime) * moves[invader.moveState].y
+                model.position.x += invader.speed * Float(context.deltaTime) * moves[invader.moveState].x
+                model.position.z += invader.speed * Float(context.deltaTime) * moves[invader.moveState].z
             }
         }
     }
 }
 
 class InvaderComponent: Component {
-    var limits : [(x: Float, y: Float)]
+    var limits: [(x: Float, z: Float)]
     var moveState = 0
     var doesMove = false
+    var speed: Float = 0.05
     
-    init(limits: [(x: Float, y: Float)]) {
+    init(limits: [(x: Float, z: Float)]) {
         self.limits = limits
     }
 //
@@ -94,6 +99,7 @@ class SpatialView: ARView {
     var cubeEntity, entity: ModelEntity?
     var boardScene: Gameboard.Scene?
     var gameAnchor: AnchorEntity?
+    var boardAnchor: AnchorEntity?
     
     required init(frame: CGRect) {
         super.init(frame: frame)
@@ -110,19 +116,15 @@ class SpatialView: ARView {
     func setup() {
         registerComponents()
 //        doCubeSetup()
-        boardScene = try! Gameboard.loadScene()
-//        scene.addAnchor(board)
-        scene.anchors.append(boardScene!)
         
 #if targetEnvironment(simulator)
         cameraMode = .nonAR
         let cameraEntity = PerspectiveCamera()
-//        cameraEntity.camera.fieldOfViewInDegrees = 140 //Custom field of view
         let cameraAnchor = AnchorEntity(world: .zero)
         cameraAnchor.addChild(cameraEntity)
                
         scene.addAnchor(cameraAnchor)
-        cameraEntity.look(at: SIMD3(repeating: 0), from: SIMD3(0,1,0), relativeTo: nil)
+        cameraEntity.look(at: SIMD3(repeating: 0), from: SIMD3(0,1,0), upVector: [0,0,-1], relativeTo: nil)
         gameAnchor = AnchorEntity()
 #else
         setupARConfiguration()
@@ -157,15 +159,14 @@ class SpatialView: ARView {
         
         backgroundColor = .black
         
-        for row in 1...1 {
-            makeInvaderRow(onto: gameAnchor!, at: Float(row) * yspacing, withColumns: 9, withSpacing: xspacing)
+        try! loadScene()
+        
+        for row in -16...(-10) {
+            makeInvaderRow(onto: boardAnchor!, at: Float(row) * yspacing, withColumns: 9, withSpacing: xspacing)
         }
         
-        gameAnchor!.setParent(boardScene!)
-        gameAnchor!.transform.rotation = simd_quatf(angle: -.pi/2, axis: [1,0,0])
-        gameAnchor!.position.z -= 0.2
-//        boardScene?.scene?.addAnchor(anchor)
-        
+        scene.addAnchor(boardAnchor!)
+
         setInvader(shouldMove: true)
     }
     
@@ -179,7 +180,7 @@ class SpatialView: ARView {
         }
     }
     
-    func makeInvaderRow(onto anchor: AnchorEntity, at y: Float, withColumns cols: Int, withSpacing spacing: Float) {
+    func makeInvaderRow(onto anchor: AnchorEntity, at z: Float, withColumns cols: Int, withSpacing spacing: Float) {
         let low = 1-(cols/2) - cols % 2
         let high = cols/2
         
@@ -192,16 +193,16 @@ class SpatialView: ARView {
  
             entity = ModelEntity(mesh: text,
                             materials: [UnlitMaterial()])
-            entity?.position.x = starting + Float(index) * spacing
-            entity?.position.y = y
-            entity?.transform.rotation = simd_quatf(angle: .pi/4, axis: [1,0,0])
-            entity?.setParent(anchor)
+
+            anchor.addChild(entity!, preservingWorldTransform: false)
+            entity?.setPosition(SIMD3(starting + Float(index) * spacing, 0, z), relativeTo: anchor)
+
+            entity?.transform.rotation = simd_quatf(angle: .pi/4, axis: [-1,0,0])
             entity?.name = "Prim\(currNum)"
-            
             
             let limits: [(Float, Float)] = generateLimits(
                 x: entity!.position.x,
-                y: y,
+                z: z,
                 limitValue: Utilities.moveDistance,
                 limitValueVertical: Utilities.moveDistanceVertical)
             print(limits)
@@ -210,8 +211,24 @@ class SpatialView: ARView {
         }
     }
     
-    func generateLimits(x: Float, y: Float, limitValue: Float, limitValueVertical: Float) -> [(Float, Float)] {
-        return [(x+limitValue, 0), (x+limitValue, y-limitValueVertical), (x-limitValue, 0), (x-limitValue, y-limitValueVertical)]
+    func createScene(from anchorEntity: RealityKit.AnchorEntity) -> Gameboard.Scene {
+        let scene = Gameboard.Scene()
+        scene.anchoring = anchorEntity.anchoring
+        scene.addChild(anchorEntity)
+        return scene
+    }
+    
+    func loadScene() throws {
+        guard let realityFileURL = Foundation.Bundle(for: Gameboard.Scene.self).url(forResource: "gameboard", withExtension: "reality") else {
+            throw Gameboard.LoadRealityFileError.fileNotFound("gameboard.reality")
+        }
+
+        let realityFileSceneURL = realityFileURL.appendingPathComponent("Scene", isDirectory: false)
+        boardAnchor = try Gameboard.Scene.loadAnchor(contentsOf: realityFileSceneURL)
+    }
+    
+    func generateLimits(x: Float, z: Float, limitValue: Float, limitValueVertical: Float) -> [(Float, Float)] {
+        return [(x+limitValue, 0), (x+limitValue, z+limitValueVertical), (x-limitValue, 0), (x-limitValue, z+limitValueVertical)]
     }
     
     func doCubeSetup() {
