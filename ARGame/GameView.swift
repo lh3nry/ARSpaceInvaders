@@ -11,7 +11,23 @@ import ARKit
 import RealityKit
 import Combine
 
-class ChangeMeshAndColorSystem: System {
+class Utilities {
+    static let spacing: Float = 0.25
+    static let moveDistance: Float = 1
+    static let moveDistanceVertical: Float = 1/4
+    
+    static func getTextMesh(for string: String) -> MeshResource {
+        return MeshResource.generateText(
+                              string,
+              extrusionDepth: 0.01,
+                        font: .init(name: "Helvetica", size: 0.15)!,
+              containerFrame: .zero,
+                   alignment: .center,
+               lineBreakMode: .byCharWrapping)
+    }
+}
+
+class InvaderMotion: System {
     static let query = EntityQuery(where: .has(ModelComponent.self) && .has(InvaderComponent.self))
     
     required init(scene: RealityKit.Scene) {
@@ -30,55 +46,29 @@ class ChangeMeshAndColorSystem: System {
             let xlimit = invader.limits[invader.moveState].x
             
             if invader.moveState == 0 && xlimit > 0 && model.position.x > xlimit{
-//                print("branch 1")
                 model.position.x = xlimit - Float(context.deltaTime)
                 invader.moveState = (invader.moveState + 1) % stateCount
-//                model.model?.mesh = getTextMesh(for: "\(invader.moveState)")
+                model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
             }
             else if invader.moveState == 2 && xlimit < 0 && model.position.x < xlimit {
-//                print("branch 2")
-
                 model.position.x = xlimit + Float(context.deltaTime)
                 invader.moveState = (invader.moveState + 1) % stateCount
-//                model.model?.mesh = getTextMesh(for: "\(invader.moveState)")
+                model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
             }
             else if (invader.moveState == 1 || invader.moveState == 3) && model.position.y < invader.limits[invader.moveState].y {
-//                print("branch 3")
 //                print("\(invader.moveState) \(invader.limits[invader.moveState]) pos (\(model.position.x), \(model.position.y)), move (\(moves[invader.moveState]) ")
 //                model.position.y -= Float(context.deltaTime) * moves[invader.moveState].y
                 invader.moveState = (invader.moveState + 1) % stateCount
-//                model.model?.mesh = getTextMesh(for: "\(invader.moveState)")
+                model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
 
-                invader.limits[1].y -= 0.25
-                invader.limits[3].y -= 0.25
+                invader.limits[1].y -= Utilities.moveDistanceVertical
+                invader.limits[3].y -= Utilities.moveDistanceVertical
             }
             else {
-//                print("branch 4")
-
                 model.position.x += Float(context.deltaTime) * moves[invader.moveState].x
                 model.position.y += Float(context.deltaTime) * moves[invader.moveState].y
             }
-            
-
-            
-//
-//            model.model?.mesh = getTextMesh(for: "\(invader.moveState)")
-//
-//            var material = PhysicallyBasedMaterial()
-//            material.baseColor.tint = .systemOrange
-//
-//            entity.model?.materials = [material]
         }
-    }
-    
-    func getTextMesh(for string: String) -> MeshResource {
-        return MeshResource.generateText(
-                              string,
-              extrusionDepth: 0.01,
-                        font: .systemFont(ofSize: 0.15),
-              containerFrame: .zero,
-                   alignment: .center,
-               lineBreakMode: .byCharWrapping)
     }
 }
 
@@ -123,10 +113,10 @@ class SpatialView: ARView {
     }
     
     func doECSTestSetup() {
-        ChangeMeshAndColorSystem.registerSystem()
+        InvaderMotion.registerSystem()
         let anchor = AnchorEntity()
         
-        let xspacing = Float(0.25)
+        let xspacing = Utilities.spacing
         let yspacing = xspacing
         
         backgroundColor = .black
@@ -135,16 +125,6 @@ class SpatialView: ARView {
             makeInvaderRow(onto: anchor, at: Float(row) * yspacing, withColumns: 5, withSpacing: xspacing)
         }
         scene.addAnchor(anchor)
-    }
-    
-    func getTextMesh(for string: String) -> MeshResource {
-        return MeshResource.generateText(
-                              string,
-              extrusionDepth: 0.01,
-                        font: .systemFont(ofSize: 0.15),
-              containerFrame: .zero,
-                   alignment: .center,
-               lineBreakMode: .byCharWrapping)
     }
     
     func makeInvaderRow(onto anchor: AnchorEntity, at y: Float, withColumns cols: Int, withSpacing spacing: Float) {
@@ -156,7 +136,7 @@ class SpatialView: ARView {
         for index in low...high {
             let currNum = index + 3
             
-            let text = getTextMesh(for: "\(currNum)")
+            let text = Utilities.getTextMesh(for: "\(currNum)")
  
             entity = ModelEntity(mesh: text,
                             materials: [UnlitMaterial()])
@@ -170,24 +150,13 @@ class SpatialView: ARView {
                 InvaderComponent(limits: generateLimits(
                     x: entity!.position.x,
                     y: y,
-                    limitValue: 1))
-            
-            print(generateLimits(
-                x: entity!.position.x,
-                y: y,
-                limitValue: 1))
-            
-            print("\(entity!.position.x), \(y)")
-            
-
-//            if currNum == 2 || currNum == 4 {
-//                entity?.components[InvaderComponent.self] = .init()
-//            }
+                    limitValue: Utilities.moveDistance,
+                    limitValueVertical: Utilities.moveDistanceVertical))
         }
     }
     
-    func generateLimits(x: Float, y: Float, limitValue: Float) -> [(Float, Float)] {
-        return [(x+limitValue, 0), (x+limitValue, y-limitValue/4), (x-limitValue, 0), (x-limitValue, y-limitValue/4)]
+    func generateLimits(x: Float, y: Float, limitValue: Float, limitValueVertical: Float) -> [(Float, Float)] {
+        return [(x+limitValue, 0), (x+limitValue, y-limitValueVertical), (x-limitValue, 0), (x-limitValue, y-limitValueVertical)]
     }
     
     func doCubeSetup() {
