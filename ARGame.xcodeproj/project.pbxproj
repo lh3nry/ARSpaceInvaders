@@ -15,6 +15,7 @@
 		AE78CE9A29C034550042D8EB /* ARGameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE78CE9929C034550042D8EB /* ARGameUITests.swift */; };
 		AE78CE9C29C034550042D8EB /* ARGameUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE78CE9B29C034550042D8EB /* ARGameUITestsLaunchTests.swift */; };
 		AE78CEA929C0347F0042D8EB /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE78CEA829C0347F0042D8EB /* GameView.swift */; };
+		AE78CEAB29C2ED060042D8EB /* gameboard.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = AE78CEAA29C2ED060042D8EB /* gameboard.rcproject */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		AE78CE9929C034550042D8EB /* ARGameUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameUITests.swift; sourceTree = "<group>"; };
 		AE78CE9B29C034550042D8EB /* ARGameUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		AE78CEA829C0347F0042D8EB /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		AE78CEAA29C2ED060042D8EB /* gameboard.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = gameboard.rcproject; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 				AE78CE7E29C034530042D8EB /* ARGameApp.swift */,
 				AE78CE8029C034530042D8EB /* ContentView.swift */,
 				AE78CEA829C0347F0042D8EB /* GameView.swift */,
+				AE78CEAA29C2ED060042D8EB /* gameboard.rcproject */,
 				AE78CE8229C034550042D8EB /* Assets.xcassets */,
 				AE78CE8429C034550042D8EB /* Preview Content */,
 			);
@@ -263,6 +266,7 @@
 				AE78CE8129C034530042D8EB /* ContentView.swift in Sources */,
 				AE78CEA929C0347F0042D8EB /* GameView.swift in Sources */,
 				AE78CE7F29C034530042D8EB /* ARGameApp.swift in Sources */,
+				AE78CEAB29C2ED060042D8EB /* gameboard.rcproject in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,9 +428,11 @@
 				DEVELOPMENT_TEAM = XAUVSTMBH8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = arkit;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -453,9 +459,11 @@
 				DEVELOPMENT_TEAM = XAUVSTMBH8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = arkit;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
