@@ -103,12 +103,14 @@ class InvaderComponent: Component {
 }
 
 class SpatialView: ARView {
-    var updateSub, gameLossSub: Cancellable!
+    var updateSub, gameLossSub, invaderHitSub: Cancellable!
     
     var cubeEntity, entity, playerModel: ModelEntity?
     var boardScene: Gameboard.Scene?
     var gameAnchor: AnchorEntity?
     var boardAnchor: AnchorEntity?
+    
+    var bulletGroup, invaderGroup, gameLossGroup, invaderMask: CollisionGroup?
     
     required init(frame: CGRect) {
         super.init(frame: frame)
@@ -124,6 +126,7 @@ class SpatialView: ARView {
 
     func setup() {
         registerComponents()
+        doCollisionGroupSetup()
 //        doCubeSetup()
         NotificationCenter.default.addObserver(self, selector: #selector(self.fireWeapon), name: .weaponFiredEvent, object: nil)
         
@@ -146,6 +149,13 @@ class SpatialView: ARView {
     
     func registerComponents() {
         InvaderComponent.registerComponent()
+    }
+    
+    func doCollisionGroupSetup() {
+        bulletGroup = CollisionGroup(rawValue: 1)
+        invaderGroup = CollisionGroup(rawValue: 2)
+        gameLossGroup = CollisionGroup(rawValue: 4)
+        invaderMask = bulletGroup!.union(gameLossGroup!)
     }
     
     func setupARConfiguration() {
@@ -172,6 +182,7 @@ class SpatialView: ARView {
         let collider = TriggerVolume(shapes: [shape])
         collider.generateCollisionShapes(recursive: true)
         collider.collision?.mode = .trigger
+        collider.collision?.filter = CollisionFilter(group: gameLossGroup!, mask: invaderGroup!)
         
         gameLossSub = scene.subscribe(to: CollisionEvents.Began.self, on: collider) { [unowned self] in
             gameLossColliderHit(event: $0)
@@ -196,16 +207,13 @@ class SpatialView: ARView {
             1,4,3
         ]
         
-        var playerShape = ShapeResource.generateConvex(from: pointSet)
-        playerShape = playerShape.offsetBy(translation: [0,0.02,0.2])
-        
         var ship = MeshDescriptor(name: "Ship")
         ship.positions = MeshBuffer(pointSet)
         ship.primitives = .triangles(tris)
         
         let shipModel = ModelEntity(mesh: try! .generate(from: [ship]))
         shipModel.setParent(boardAnchor!, preservingWorldTransform: false)
-        shipModel.setPosition(SIMD3([0,0.02,0.2]), relativeTo: boardAnchor!)
+        shipModel.setPosition(SIMD3([0,0.01,0.2]), relativeTo: boardAnchor!)
         
         playerModel = shipModel
         updateSub = scene.subscribe(to: SceneEvents.Update.self) { [unowned self] in
@@ -221,7 +229,7 @@ class SpatialView: ARView {
         
 //        backgroundColor = .black
 
-        for row in -16...(-10) {
+        for row in -16...(-11) {
             makeInvaderRow(onto: boardAnchor!, at: Float(row) * yspacing, withColumns: 9, withSpacing: xspacing)
         }
 
@@ -229,13 +237,42 @@ class SpatialView: ARView {
     }
     
     @objc func fireWeapon() {
-        print("SpatialView: fire weapon")
+//        print("SpatialView: fire weapon")
+        
+        let bulletEntity = ModelEntity(mesh: .generateSphere(radius: 0.005)) as (Entity & HasCollision & HasPhysicsBody)
+        bulletEntity.generateCollisionShapes(recursive: true)
+//        bulletEntity.collision = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.003, height: 0.005, depth: 0.003)])
+//        bulletEntity.collision?.filter = CollisionFilter(group: bulletGroup!, mask: invaderGroup!)
+//        bulletEntity.collision?.mode = .trigger
+        invaderHitSub = scene.subscribe(to: CollisionEvents.Began.self, on: bulletEntity) { [unowned self] in
+            invaderHit(event: $0)
+        }
+        
+        bulletEntity.physicsBody = PhysicsBodyComponent(massProperties: .default, material: .default, mode: .dynamic)
+//        bulletEntity.physicsBody?.massProperties.mass = 1
+        bulletEntity.physicsBody?.isTranslationLocked = (false, true, false)
+        bulletEntity.physicsBody?.isRotationLocked = (true, true, true)
+        if let unwrapped = playerModel {
+            unwrapped.addChild(bulletEntity, preservingWorldTransform: false)
+            bulletEntity.applyLinearImpulse(SIMD3([0,0,-1]), relativeTo: unwrapped.parent)
+        }
     }
     
     func gameLossColliderHit(event: CollisionEvents.Began) {
         print("GameLost")
+//        print("GameLost A: \(event.entityA), B: \(event.entityB)")
 //        print("EntityA: \(event.entityA) EntityB: \(event.entityB)")
         setInvader(shouldMove: false)
+    }
+    
+    func invaderHit(event: CollisionEvents.Began) {
+        print("Invader hit!")
+        let tempAnchor = AnchorEntity()
+        scene.addAnchor(tempAnchor)
+        event.entityA.setParent(tempAnchor)
+        event.entityB.setParent(tempAnchor)
+        scene.removeAnchor(tempAnchor)
+        invaderHitSub = nil
     }
     
     func setInvader(shouldMove: Bool) {
@@ -277,6 +314,7 @@ class SpatialView: ARView {
             print(entity!.position.x)
             entity?.components[InvaderComponent.self] = InvaderComponent(limits: limits)
             entity?.generateCollisionShapes(recursive: true)
+            entity?.collision?.filter = CollisionFilter(group: invaderGroup!, mask: bulletGroup!.union(gameLossGroup!))
         }
     }
     

@@ -17,10 +17,18 @@ struct ContentView: View {
         ZStack(alignment: .bottom) {
             ARViewPort()
             
-            Button("Fire") {
+            Button(action: {
                 NotificationCenter.default.post(Notification(name: .weaponFiredEvent))
+            }) {
+                Text("PewPew")
+                    .fontWeight(.heavy)
+                    .frame(width: 130, height: 130)
+                    .foregroundColor(Color.white)
+                    .background(Color.red)
+                    .clipShape(Circle())
             }
-            .buttonStyle(.bordered)
+
+            Spacer()
         }
     }
 }
