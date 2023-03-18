@@ -28,6 +28,17 @@ class Utilities {
     }
 }
 
+extension Comparable {
+    func clamped(_ f: Self, _ t: Self)  ->  Self {
+        var r = self
+        if r < f { r = f }
+        if r > t { r = t }
+        // (use SIMPLE, EXPLICIT code here to make it utterly clear
+        // whether we are inclusive, what form of equality, etc etc)
+        return r
+    }
+}
+
 class InvaderMotion: System {
     static let query = EntityQuery(where: .has(ModelComponent.self) && .has(InvaderComponent.self))
     
@@ -94,7 +105,7 @@ class InvaderComponent: Component {
 class SpatialView: ARView {
     var updateSub, gameLossSub: Cancellable!
     
-    var cubeEntity, entity: ModelEntity?
+    var cubeEntity, entity, playerModel: ModelEntity?
     var boardScene: Gameboard.Scene?
     var gameAnchor: AnchorEntity?
     var boardAnchor: AnchorEntity?
@@ -115,7 +126,6 @@ class SpatialView: ARView {
         registerComponents()
 //        doCubeSetup()
         NotificationCenter.default.addObserver(self, selector: #selector(self.fireWeapon), name: .weaponFiredEvent, object: nil)
-        
         
 #if targetEnvironment(simulator)
         cameraMode = .nonAR
@@ -168,6 +178,39 @@ class SpatialView: ARView {
         }
         
         collider.setParent(boardAnchor!, preservingWorldTransform: true)
+        
+        let pointSet: [SIMD3<Float>] = [
+//            SIMD3([0.025,0.025,0.05]),
+            SIMD3([0,0,-0.01]),
+            SIMD3([0.01,0.01,0.01]),
+            SIMD3([-0.01,0.01,0.01]),
+            SIMD3([0.01,-0.01,0.01]),
+            SIMD3([-0.01,-0.01,0.01]),
+        ]
+        let tris: [UInt32] = [
+            0,2,1,
+            0,4,2,
+            0,3,4,
+            0,1,3,
+            1,2,4,
+            1,4,3
+        ]
+        
+        var playerShape = ShapeResource.generateConvex(from: pointSet)
+        playerShape = playerShape.offsetBy(translation: [0,0.02,0.2])
+        
+        var ship = MeshDescriptor(name: "Ship")
+        ship.positions = MeshBuffer(pointSet)
+        ship.primitives = .triangles(tris)
+        
+        let shipModel = ModelEntity(mesh: try! .generate(from: [ship]))
+        shipModel.setParent(boardAnchor!, preservingWorldTransform: false)
+        shipModel.setPosition(SIMD3([0,0.02,0.2]), relativeTo: boardAnchor!)
+        
+        playerModel = shipModel
+        updateSub = scene.subscribe(to: SceneEvents.Update.self) { [unowned self] in
+            self.playerUpdate(on: $0)
+        }
     }
     
     func doECSTestSetup() {
@@ -279,4 +322,28 @@ class SpatialView: ARView {
         cubeEntity?.transform.rotation *= rotation
     }
     
+    func playerUpdate(on event: SceneEvents.Update) {
+        let angle = (event.deltaTime * 0.5).truncatingRemainder(dividingBy: .pi)
+        let rotation = simd_quatf(angle: Float(angle), axis: SIMD3(0,0,1))
+        playerModel?.transform.rotation *= rotation
+        
+        let viewCenter = CGPoint(x: bounds.midX, y: bounds.midY)
+        
+        if let ray =  self.ray(through: viewCenter) {
+            let results = scene.raycast(origin: ray.origin, direction: ray.direction, length: 3.0, query: .nearest)
+
+            if let result = results.first {
+                let pos = result.position
+
+//                print("\(results.first!.position) world pos? \(pos)")
+
+                playerModel?.transform.translation.x = pos.x.clamped(-0.12, 0.12)
+                
+//                setScale(of: results, to: 0.35)
+            } else {
+//                print("No ray hits found.")
+//                playerModel?.transform.translation = cameraTransform.translation + SIMD3(0,0,1)
+            }
+        }
+    }
 }
