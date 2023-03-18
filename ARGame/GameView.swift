@@ -15,6 +15,7 @@ class Utilities {
     static let spacing: Float = 0.015
     static let moveDistance: Float = 0.07
     static let moveDistanceVertical: Float = 0.025
+    static let maxSpeed: Float = 0.2
     
     static func getTextMesh(for string: String) -> MeshResource {
         return MeshResource.generateText(
@@ -69,7 +70,7 @@ class InvaderMotion: System {
 
                 invader.limits[1].z += Utilities.moveDistanceVertical
                 invader.limits[3].z += Utilities.moveDistanceVertical
-                invader.speed = min(invader.speed + 0.01, 0.1)
+                invader.speed = min(invader.speed + 0.03, Utilities.maxSpeed)
             }
             else {
                 model.position.x += invader.speed * Float(context.deltaTime) * moves[invader.moveState].x
@@ -88,14 +89,11 @@ class InvaderComponent: Component {
     init(limits: [(x: Float, z: Float)]) {
         self.limits = limits
     }
-//
-//    func updateLimits(at index: Int, x: Float, y: Float) {
-//        self.limits[index] = (x, y)
-//    }
 }
 
 class SpatialView: ARView {
-    var updateSub: Cancellable!
+    var updateSub, gameLossSub: Cancellable!
+    
     var cubeEntity, entity: ModelEntity?
     var boardScene: Gameboard.Scene?
     var gameAnchor: AnchorEntity?
@@ -116,6 +114,8 @@ class SpatialView: ARView {
     func setup() {
         registerComponents()
 //        doCubeSetup()
+        NotificationCenter.default.addObserver(self, selector: #selector(self.fireWeapon), name: .weaponFiredEvent, object: nil)
+        
         
 #if targetEnvironment(simulator)
         cameraMode = .nonAR
@@ -129,6 +129,7 @@ class SpatialView: ARView {
 #else
         setupARConfiguration()
 #endif
+        doGameSetup()
         
         doECSTestSetup()
     }
@@ -151,23 +152,47 @@ class SpatialView: ARView {
         gameAnchor = AnchorEntity(.plane(.horizontal, classification: .table, minimumBounds: SIMD2(repeating: 0)))
     }
     
+    func doGameSetup() {
+        try! loadScene()
+        
+        scene.addAnchor(boardAnchor!)
+        
+        var shape = ShapeResource.generateBox(width: 0.3, height: 0.05, depth: 0.05)
+        shape = shape.offsetBy(translation: [0,0.03,0.225])
+        let collider = TriggerVolume(shapes: [shape])
+        collider.generateCollisionShapes(recursive: true)
+        collider.collision?.mode = .trigger
+        
+        gameLossSub = scene.subscribe(to: CollisionEvents.Began.self, on: collider) { [unowned self] in
+            gameLossColliderHit(event: $0)
+        }
+        
+        collider.setParent(boardAnchor!, preservingWorldTransform: true)
+    }
+    
     func doECSTestSetup() {
         InvaderMotion.registerSystem()
 
         let xspacing = Utilities.spacing
         let yspacing = xspacing
         
-        backgroundColor = .black
-        
-        try! loadScene()
-        
+//        backgroundColor = .black
+
         for row in -16...(-10) {
             makeInvaderRow(onto: boardAnchor!, at: Float(row) * yspacing, withColumns: 9, withSpacing: xspacing)
         }
-        
-        scene.addAnchor(boardAnchor!)
 
         setInvader(shouldMove: true)
+    }
+    
+    @objc func fireWeapon() {
+        print("SpatialView: fire weapon")
+    }
+    
+    func gameLossColliderHit(event: CollisionEvents.Began) {
+        print("GameLost")
+//        print("EntityA: \(event.entityA) EntityB: \(event.entityB)")
+        setInvader(shouldMove: false)
     }
     
     func setInvader(shouldMove: Bool) {
@@ -198,7 +223,7 @@ class SpatialView: ARView {
             entity?.setPosition(SIMD3(starting + Float(index) * spacing, 0, z), relativeTo: anchor)
 
             entity?.transform.rotation = simd_quatf(angle: .pi/4, axis: [-1,0,0])
-            entity?.name = "Prim\(currNum)"
+            entity?.name = "Invader\(currNum)"
             
             let limits: [(Float, Float)] = generateLimits(
                 x: entity!.position.x,
@@ -208,6 +233,7 @@ class SpatialView: ARView {
             print(limits)
             print(entity!.position.x)
             entity?.components[InvaderComponent.self] = InvaderComponent(limits: limits)
+            entity?.generateCollisionShapes(recursive: true)
         }
     }
     

@@ -8,9 +8,20 @@
 import SwiftUI
 import RealityKit
 
+extension Notification.Name {
+    static let weaponFiredEvent = Notification.Name("WeaponFiredEvent")
+}
+
 struct ContentView: View {
     var body: some View {
-        ARViewPort()
+        ZStack(alignment: .bottom) {
+            ARViewPort()
+            
+            Button("Fire") {
+                NotificationCenter.default.post(Notification(name: .weaponFiredEvent))
+            }
+            .buttonStyle(.bordered)
+        }
     }
 }
 
@@ -18,6 +29,8 @@ struct ARViewPort: UIViewRepresentable {
     func makeUIView(context: Context) -> ARView {
         let arView = SpatialView(frame: .zero)
         arView.setup()
+        
+//        arView.debugOptions.insert(.showPhysics)
         
         return arView
     }
