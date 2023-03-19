@@ -7,6 +7,7 @@
 
 import SwiftUI
 import RealityKit
+import Combine
 
 extension Notification.Name {
     static let weaponFiredEvent = Notification.Name("WeaponFiredEvent")
@@ -31,10 +32,51 @@ struct ContentView: View {
     
     let customDetent = PresentationDetent.height(200)
     
+//    var modelLoadTask: Cancellable!
+    let models: [ModelEntity] = {
+        let fileManager = FileManager.default
+        
+        guard let path = Bundle.main.resourcePath, let files = try? fileManager.contentsOfDirectory(atPath: path) else {
+            return []
+        }
+        
+        var availableModels: [ModelEntity] = []
+        if let player = files.first(where: { filename in
+            filename.contains("player")
+        }) {
+            if let unwrapped = try? ModelEntity.loadModel(named: player) {
+                availableModels.append(unwrapped)
+            }
+        }
+        for filename in files where filename.contains("invader") {
+            let model = try? ModelEntity.loadModel(named: filename)
+            if let unwrapped = model {
+                availableModels.append(unwrapped)
+            }
+        }
+//        for filename in files where filename.hasSuffix("usdz") {
+//            let model = try? ModelEntity.loadModel(named: filename)
+//            if let unwrapped = model {
+//                availableModels.append(unwrapped)
+//            }
+////            ModelEntity.loadModelAsync(named: filename)
+////                .sink(
+////                    receiveCompletion: { loadCompletion in
+////                        print("DEBUG: Unable to load modelEntity for filename: \(filename)")},
+////                    receiveValue: { modelEntity in
+////                        availableModels.append(modelEntity)
+////                        print("DEBUG: Successfully loaded ModelEntity for file: \(filename)")
+////                    })
+//        }
+        
+        return availableModels
+    }()
+    
     var body: some View {
         ZStack(alignment: .top) {
             ARViewPort(
                 parentView: self,
+                models: models,
                 invaderMaxSpeed: $invaderMaxSpeed,
                 numberOfInvaderRows: $invaderRows,
                 gamePaused: $gamePaused)
@@ -125,13 +167,14 @@ struct ContentView: View {
 
 struct ARViewPort: UIViewRepresentable {
     let parentView: any View
+    let models: [ModelEntity]
     @Binding var invaderMaxSpeed: Float
     @Binding var numberOfInvaderRows: Int
     @Binding var gamePaused: Bool
     
     func makeUIView(context: Context) -> ARView {
         let arView = SpatialView(frame: .zero)
-        arView.setup(parentView: parentView)
+        arView.setup(parentView: parentView, models: models)
         
 //        arView.debugOptions.insert(.showPhysics)
         

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE637E2129C79D27008BCAC0 /* invader3.usdz in Resources */ = {isa = PBXBuildFile; fileRef = AE637E1D29C79D27008BCAC0 /* invader3.usdz */; };
+		AE637E2229C79D27008BCAC0 /* invader2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = AE637E1E29C79D27008BCAC0 /* invader2.usdz */; };
+		AE637E2329C79D27008BCAC0 /* _player.usdz in Resources */ = {isa = PBXBuildFile; fileRef = AE637E1F29C79D27008BCAC0 /* _player.usdz */; };
+		AE637E2429C79D27008BCAC0 /* invader1.usdz in Resources */ = {isa = PBXBuildFile; fileRef = AE637E2029C79D27008BCAC0 /* invader1.usdz */; };
 		AE78CE7F29C034530042D8EB /* ARGameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE78CE7E29C034530042D8EB /* ARGameApp.swift */; };
 		AE78CE8129C034530042D8EB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE78CE8029C034530042D8EB /* ContentView.swift */; };
 		AE78CE8329C034550042D8EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE78CE8229C034550042D8EB /* Assets.xcassets */; };
@@ -38,6 +42,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AE637E1D29C79D27008BCAC0 /* invader3.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = invader3.usdz; sourceTree = "<group>"; };
+		AE637E1E29C79D27008BCAC0 /* invader2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = invader2.usdz; sourceTree = "<group>"; };
+		AE637E1F29C79D27008BCAC0 /* _player.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = _player.usdz; sourceTree = "<group>"; };
+		AE637E2029C79D27008BCAC0 /* invader1.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = invader1.usdz; sourceTree = "<group>"; };
 		AE78CE7B29C034530042D8EB /* ARGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE78CE7E29C034530042D8EB /* ARGameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameApp.swift; sourceTree = "<group>"; };
 		AE78CE8029C034530042D8EB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -79,6 +87,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AE637E1C29C79D27008BCAC0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AE637E1D29C79D27008BCAC0 /* invader3.usdz */,
+				AE637E1E29C79D27008BCAC0 /* invader2.usdz */,
+				AE637E1F29C79D27008BCAC0 /* _player.usdz */,
+				AE637E2029C79D27008BCAC0 /* invader1.usdz */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		AE78CE7229C034530042D8EB = {
 			isa = PBXGroup;
 			children = (
@@ -102,6 +121,7 @@
 		AE78CE7D29C034530042D8EB /* ARGame */ = {
 			isa = PBXGroup;
 			children = (
+				AE637E1C29C79D27008BCAC0 /* Models */,
 				AE78CE7E29C034530042D8EB /* ARGameApp.swift */,
 				AE78CE8029C034530042D8EB /* ContentView.swift */,
 				AEA0847B29C6757000F77B96 /* SheetTester.swift */,
@@ -243,8 +263,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE637E2229C79D27008BCAC0 /* invader2.usdz in Resources */,
 				AE78CE8629C034550042D8EB /* Preview Assets.xcassets in Resources */,
 				AE78CE8329C034550042D8EB /* Assets.xcassets in Resources */,
+				AE637E2329C79D27008BCAC0 /* _player.usdz in Resources */,
+				AE637E2129C79D27008BCAC0 /* invader3.usdz in Resources */,
+				AE637E2429C79D27008BCAC0 /* invader1.usdz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

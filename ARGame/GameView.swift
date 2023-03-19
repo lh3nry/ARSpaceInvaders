@@ -116,6 +116,8 @@ class SpatialView: ARView {
     
     var invaderCounter: Int = 0
     
+    var models: [ModelEntity] = []
+    
     required init(frame: CGRect) {
         super.init(frame: frame)
         isMultipleTouchEnabled = true
@@ -128,7 +130,7 @@ class SpatialView: ARView {
 
     override var canBecomeFirstResponder: Bool { true }
 
-    func setup(parentView: any View) {
+    func setup(parentView: any View, models: [ModelEntity]) {
         registerComponents()
         doCollisionGroupSetup()
 //        doCubeSetup()
@@ -136,6 +138,7 @@ class SpatialView: ARView {
         NotificationCenter.default.addObserver(self, selector: #selector(self.restart), name: .restartGameEvent, object: nil)
 
         self.parentView = parentView as? ContentView
+        self.models = models
         
 #if targetEnvironment(simulator)
         cameraMode = .nonAR
