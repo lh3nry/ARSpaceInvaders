@@ -36,7 +36,8 @@ struct ContentView: View {
                     .foregroundColor(.white)
                     .fontWeight(.heavy)
                     .shadow(color: .gray, radius: 3)
-                    .font(.system(size: 54)),
+                    .font(.system(size: 54))
+                    .padding(),
                 alignment: .top)
             .sheet(isPresented: $showUIPanel) {
                     Button(action: {
