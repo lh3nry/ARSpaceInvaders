@@ -108,7 +108,6 @@ class SpatialView: ARView {
     
     var cubeEntity, entity, playerModel: ModelEntity?
     var boardScene: Gameboard.Scene?
-    var gameAnchor: AnchorEntity?
     var boardAnchor: AnchorEntity?
     
     var bulletGroup, invaderGroup, gameLossGroup, invaderMask: CollisionGroup?
@@ -143,7 +142,6 @@ class SpatialView: ARView {
                
         scene.addAnchor(cameraAnchor)
         cameraEntity.look(at: SIMD3(repeating: 0), from: SIMD3(0,1,0), upVector: [0,0,-1], relativeTo: nil)
-        gameAnchor = AnchorEntity()
 #else
         setupARConfiguration()
 #endif
@@ -173,8 +171,6 @@ class SpatialView: ARView {
         }
         
         session.run(config)
-        
-        gameAnchor = AnchorEntity(.plane(.horizontal, classification: .table, minimumBounds: SIMD2(repeating: 0)))
     }
     
     func doGameSetup() {
