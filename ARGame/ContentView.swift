@@ -23,6 +23,11 @@ struct ContentView: View {
     @State var gameLost: Bool = false
     @State var gamePaused: Bool = false
     @State var gameReset: Bool = false
+    @State var gameWon: Bool = false
+    
+    let gameWinStatus = "CLEARED"
+    let gamePausedStatus = "GAME PAUSED"
+    let gameLostStatus = "GAME OVER"
     
     let customDetent = PresentationDetent.height(200)
     
@@ -64,35 +69,42 @@ struct ContentView: View {
                         selectedPanelDetent(changedTo: customDetent)
                     }
                 }
-                .onChange(of: panelDetent, perform: selectedPanelDetent(changedTo:))
+                .onChange(of: panelDetent) { newValue in
+                    selectedPanelDetent(changedTo: newValue)
+                    if newValue == .medium {
+                        withAnimation {
+                            gamePaused = true
+                        }
+                    }
+                    else if newValue == customDetent {
+                        withAnimation {
+                            gamePaused = false
+                        }
+                    }
+                }
             }
             .onChange(of: gameReset) { newValue in
                 if newValue == true {
                     gameReset = false
                     gameLost = false
+                    gameWon = false
+                    gameStatus = gamePausedStatus
                 }
-                
             }
         }
     }
     
     func selectedPanelDetent(changedTo newValue: PresentationDetent) {
-        if panelDetent != newValue { panelDetent = newValue}
+        if panelDetent != newValue { panelDetent = newValue }
+        
         if newValue == .medium {
-            print("Settings panel visible")
-            withAnimation {
-                gamePaused = true
-            }
-            gameStatus = gameLost ? "GAME OVER" : "GAME PAUSED"
+            gameStatus = gameLost ? gameLostStatus : gamePausedStatus
         }
         else if newValue == customDetent {
             if gameLost {
                 panelDetent = .medium
+                gamePaused = true
                 return
-            }
-            print("Settings panel slid down")
-            withAnimation {
-                gamePaused = false
             }
             gameStatus = ""
         }
@@ -103,6 +115,11 @@ struct ContentView: View {
         print("Detected game loss from child view")
         panelDetent = .medium
         gameLost = true
+    }
+    
+    func onGameWon() {
+        gameWon = true
+        gameStatus = gameWinStatus
     }
 }
 

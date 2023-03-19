@@ -114,6 +114,8 @@ class SpatialView: ARView {
     
     var parentView: ContentView?
     
+    var invaderCounter: Int = 0
+    
     required init(frame: CGRect) {
         super.init(frame: frame)
         isMultipleTouchEnabled = true
@@ -146,9 +148,12 @@ class SpatialView: ARView {
 #else
         setupARConfiguration()
 #endif
-        doGameSetup()
         
+        // Note the order to prevent a game win before invaders have been setup
+        // and save an extra state variable/flag for setup
+        doLoadScene()
         doECSTestSetup()
+        doGameSetup()
     }
     
     func registerComponents() {
@@ -175,17 +180,23 @@ class SpatialView: ARView {
     }
     
     @objc func restart() {
+        // TODO: separate option to reanchor vs restart without reanchoring?
         scene.removeAnchor(boardAnchor!)
         
-        doGameSetup()
+        // Note the order to prevent a game win before invaders have been setup
+        // and save an extra state variable/flag for setup
+        doLoadScene()
         doECSTestSetup()
+        doGameSetup()
     }
     
-    func doGameSetup() {
+    func doLoadScene() {
         try! loadScene()
         
         scene.addAnchor(boardAnchor!)
-        
+    }
+    
+    func doGameSetup() {
         var shape = ShapeResource.generateBox(width: 0.3, height: 0.05, depth: 0.05)
         shape = shape.offsetBy(translation: [0,0.03,0.225])
         let collider = TriggerVolume(shapes: [shape])
@@ -236,17 +247,15 @@ class SpatialView: ARView {
         let xspacing = Utilities.spacing
         let yspacing = xspacing
         
+        invaderCounter = 0
+
         let startZ = -16
         for row in startZ...(startZ+Utilities.numRows-1) {
             makeInvaderRow(onto: boardAnchor!, at: Float(row) * yspacing, withColumns: 9, withSpacing: xspacing)
         }
-
-//        setInvader(shouldMove: true)
     }
     
     @objc func fireWeapon() {
-//        print("SpatialView: fire weapon")
-        
         let bulletEntity = ModelEntity(mesh: .generateSphere(radius: 0.005)) as (Entity & HasCollision & HasPhysicsBody)
         bulletEntity.generateCollisionShapes(recursive: true)
 //        bulletEntity.collision = CollisionComponent(shapes: [ShapeResource.generateBox(width: 0.003, height: 0.005, depth: 0.003)])
@@ -272,7 +281,8 @@ class SpatialView: ARView {
     }
     
     func invaderHit(event: CollisionEvents.Began) {
-        print("Invader hit!")
+        invaderCounter -= 1
+        
         let tempAnchor = AnchorEntity()
         scene.addAnchor(tempAnchor)
         event.entityA.setParent(tempAnchor)
@@ -318,6 +328,8 @@ class SpatialView: ARView {
                 unwrapped.components[InvaderComponent.self] = InvaderComponent(limits: limits)
                 unwrapped.generateCollisionShapes(recursive: true)
                 unwrapped.collision?.filter = CollisionFilter(group: invaderGroup!, mask: bulletGroup!.union(gameLossGroup!))
+                
+                invaderCounter += 1
             }
         }
     }
@@ -365,6 +377,19 @@ class SpatialView: ARView {
     }
     
     func playerUpdate(on event: SceneEvents.Update) {
+        // Note: can't use this code because the QueryResults will use the
+        // Sequence protocol default implementation for underestimatedCount
+        // which always returns 0
+//        let invaders = scene.performQuery(InvaderMotion.query)
+//        if invaders.underestimatedCount == 0 {
+//            parentView?.onGameWon()
+//        }
+        
+        // Use a counter instead
+        if invaderCounter < 1 {
+            parentView?.onGameWon()
+        }
+        
         let angle = (event.deltaTime * 0.5).truncatingRemainder(dividingBy: .pi)
         let rotation = simd_quatf(angle: Float(angle), axis: SIMD3(0,0,1))
         playerModel?.transform.rotation *= rotation
