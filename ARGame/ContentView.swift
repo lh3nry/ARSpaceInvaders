@@ -17,6 +17,7 @@ struct ContentView: View {
     @State var panelDetent = PresentationDetent.height(200)
     @State var invaderMaxSpeed: Float = 0.2
     @State var invaderRows: Int = 5
+    @State var gameStatus: String?
     
     @State var gameLost: Bool = false
     @State var gamePaused: Bool = false
@@ -30,6 +31,13 @@ struct ContentView: View {
                 invaderMaxSpeed: $invaderMaxSpeed,
                 numberOfInvaderRows: $invaderRows,
                 gamePaused: $gamePaused)
+            .overlay(
+                Text(gameStatus ?? "")
+                    .foregroundColor(.white)
+                    .fontWeight(.heavy)
+                    .shadow(color: .gray, radius: 3)
+                    .font(.system(size: 54)),
+                alignment: .top)
             .sheet(isPresented: $showUIPanel) {
                     Button(action: {
                         NotificationCenter.default.post(Notification(name: .weaponFiredEvent))
@@ -53,6 +61,7 @@ struct ContentView: View {
                         withAnimation {
                             gamePaused = true
                         }
+                        gameStatus = gameLost ? "GAME OVER" : "GAME PAUSED"
                     }
                     else if newValue == customDetent {
                         if gameLost {
@@ -63,6 +72,7 @@ struct ContentView: View {
                         withAnimation {
                             gamePaused = false
                         }
+                        gameStatus = ""
                     }
                 }
             }
@@ -74,6 +84,7 @@ struct ContentView: View {
         print("Detected game loss from child view")
         panelDetent = .medium
         gameLost = true
+//        gameStatus = "GAME OVER"
     }
 }
 
