@@ -16,6 +16,8 @@
 		AE78CE9C29C034550042D8EB /* ARGameUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE78CE9B29C034550042D8EB /* ARGameUITestsLaunchTests.swift */; };
 		AE78CEA929C0347F0042D8EB /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE78CEA829C0347F0042D8EB /* GameView.swift */; };
 		AE78CEAB29C2ED060042D8EB /* gameboard.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = AE78CEAA29C2ED060042D8EB /* gameboard.rcproject */; };
+		AEA0847C29C6757000F77B96 /* SheetTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA0847B29C6757000F77B96 /* SheetTester.swift */; };
+		AEA0847E29C6762900F77B96 /* SheetSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA0847D29C6762900F77B96 /* SheetSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,8 @@
 		AE78CE9B29C034550042D8EB /* ARGameUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		AE78CEA829C0347F0042D8EB /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		AE78CEAA29C2ED060042D8EB /* gameboard.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = gameboard.rcproject; sourceTree = "<group>"; };
+		AEA0847B29C6757000F77B96 /* SheetTester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetTester.swift; sourceTree = "<group>"; };
+		AEA0847D29C6762900F77B96 /* SheetSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +104,8 @@
 			children = (
 				AE78CE7E29C034530042D8EB /* ARGameApp.swift */,
 				AE78CE8029C034530042D8EB /* ContentView.swift */,
+				AEA0847B29C6757000F77B96 /* SheetTester.swift */,
+				AEA0847D29C6762900F77B96 /* SheetSettingsView.swift */,
 				AE78CEA829C0347F0042D8EB /* GameView.swift */,
 				AE78CEAA29C2ED060042D8EB /* gameboard.rcproject */,
 				AE78CE8229C034550042D8EB /* Assets.xcassets */,
@@ -263,6 +269,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEA0847C29C6757000F77B96 /* SheetTester.swift in Sources */,
+				AEA0847E29C6762900F77B96 /* SheetSettingsView.swift in Sources */,
 				AE78CE8129C034530042D8EB /* ContentView.swift in Sources */,
 				AE78CEA929C0347F0042D8EB /* GameView.swift in Sources */,
 				AE78CE7F29C034530042D8EB /* ARGameApp.swift in Sources */,

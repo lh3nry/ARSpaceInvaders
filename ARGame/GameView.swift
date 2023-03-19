@@ -15,7 +15,8 @@ class Utilities {
     static let spacing: Float = 0.015
     static let moveDistance: Float = 0.07
     static let moveDistanceVertical: Float = 0.025
-    static let maxSpeed: Float = 0.2
+    static var maxSpeed: Float = 0.2
+    static var numRows: Int = 5
     
     static func getTextMesh(for string: String) -> MeshResource {
         return MeshResource.generateText(
@@ -66,18 +67,18 @@ class InvaderMotion: System {
             if invader.moveState == 0 && xlimit > 0 && model.position.x > xlimit {
                 model.position.x = xlimit - invader.speed * Float(context.deltaTime)
                 invader.moveState = (invader.moveState + 1) % stateCount
-                model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
+//                model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
             }
             else if invader.moveState == 2 && xlimit < 0 && model.position.x < xlimit {
                 model.position.x = xlimit + invader.speed * Float(context.deltaTime)
                 invader.moveState = (invader.moveState + 1) % stateCount
-                model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
+//                model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
             }
             else if (invader.moveState == 1 || invader.moveState == 3) && model.position.z > invader.limits[invader.moveState].z {
 //                print("\(invader.moveState) \(invader.limits[invader.moveState]) pos (\(model.position.x), \(model.position.y)), move (\(moves[invader.moveState]) ")
 //                model.position.y -= Float(context.deltaTime) * moves[invader.moveState].y
                 invader.moveState = (invader.moveState + 1) % stateCount
-                model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
+//                model.model?.mesh = Utilities.getTextMesh(for: "\(invader.moveState)")
 
                 invader.limits[1].z += Utilities.moveDistanceVertical
                 invader.limits[3].z += Utilities.moveDistanceVertical
@@ -112,6 +113,8 @@ class SpatialView: ARView {
     
     var bulletGroup, invaderGroup, gameLossGroup, invaderMask: CollisionGroup?
     
+    var parentView: ContentView?
+    
     required init(frame: CGRect) {
         super.init(frame: frame)
         isMultipleTouchEnabled = true
@@ -124,11 +127,13 @@ class SpatialView: ARView {
 
     override var canBecomeFirstResponder: Bool { true }
 
-    func setup() {
+    func setup(parentView: any View) {
         registerComponents()
         doCollisionGroupSetup()
 //        doCubeSetup()
         NotificationCenter.default.addObserver(self, selector: #selector(self.fireWeapon), name: .weaponFiredEvent, object: nil)
+        
+        self.parentView = parentView as? ContentView
         
 #if targetEnvironment(simulator)
         cameraMode = .nonAR
@@ -229,7 +234,8 @@ class SpatialView: ARView {
         
 //        backgroundColor = .black
 
-        for row in -16...(-11) {
+        let startZ = -16
+        for row in startZ...(startZ+Utilities.numRows) {
             makeInvaderRow(onto: boardAnchor!, at: Float(row) * yspacing, withColumns: 9, withSpacing: xspacing)
         }
 
@@ -259,10 +265,8 @@ class SpatialView: ARView {
     }
     
     func gameLossColliderHit(event: CollisionEvents.Began) {
-        print("GameLost")
-//        print("GameLost A: \(event.entityA), B: \(event.entityB)")
-//        print("EntityA: \(event.entityA) EntityB: \(event.entityB)")
         setInvader(shouldMove: false)
+        parentView?.arGameLost()
     }
     
     func invaderHit(event: CollisionEvents.Began) {
@@ -294,16 +298,17 @@ class SpatialView: ARView {
         for index in low...high {
             let currNum = index + 3
             
-            let text = Utilities.getTextMesh(for: "\(currNum)")
+//            let text = Utilities.getTextMesh(for: "\(currNum)")
  
-            entity = ModelEntity(mesh: text,
+            entity = ModelEntity(mesh: .generateBox(size: 0.01),
                             materials: [UnlitMaterial()])
 
             anchor.addChild(entity!, preservingWorldTransform: false)
             entity?.setPosition(SIMD3(starting + Float(index) * spacing, 0, z), relativeTo: anchor)
 
             entity?.transform.rotation = simd_quatf(angle: .pi/4, axis: [-1,0,0])
-            entity?.name = "Invader\(currNum)"
+            entity?.name = "👾"
+
             
             let limits: [(Float, Float)] = generateLimits(
                 x: entity!.position.x,
@@ -372,15 +377,7 @@ class SpatialView: ARView {
 
             if let result = results.first {
                 let pos = result.position
-
-//                print("\(results.first!.position) world pos? \(pos)")
-
-                playerModel?.transform.translation.x = pos.x.clamped(-0.12, 0.12)
-                
-//                setScale(of: results, to: 0.35)
-            } else {
-//                print("No ray hits found.")
-//                playerModel?.transform.translation = cameraTransform.translation + SIMD3(0,0,1)
+                playerModel?.transform.translation.x = pos.x.clamped(-0.125, 0.125)
             }
         }
     }

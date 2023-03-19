@@ -1,35 +1,24 @@
 //
-//  ContentView.swift
+//  SheetTester.swift
 //  ARGame
 //
-//  Created by Henry Li on 2023-03-13.
+//  Created by Henry Li on 2023-03-18.
 //
 
 import SwiftUI
-import RealityKit
 
-extension Notification.Name {
-    static let weaponFiredEvent = Notification.Name("WeaponFiredEvent")
-}
-
-struct ContentView: View {
+struct SheetTester: View {
     @State var showUIPanel = true
     @State var panelDetent = PresentationDetent.height(200)
-    @State var invaderMaxSpeed: Float = 0.2
+    @State var invaderMaxSpeed: Float = 0.01
     @State var invaderRows: Int = 5
     
-    @State var gameLost: Bool = false
     @State var gamePaused: Bool = false
-    
+
     let customDetent = PresentationDetent.height(200)
     
     var body: some View {
-        ZStack(alignment: .top) {
-            ARViewPort(
-                parentView: self,
-                invaderMaxSpeed: $invaderMaxSpeed,
-                numberOfInvaderRows: $invaderRows,
-                gamePaused: $gamePaused)
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
             .sheet(isPresented: $showUIPanel) {
                     Button(action: {
                         NotificationCenter.default.post(Notification(name: .weaponFiredEvent))
@@ -42,6 +31,14 @@ struct ContentView: View {
                                 .background(Color.red)
                                 .clipShape(Circle())
                         }
+//                        else {
+//                            Text("PewPew")
+//                                .fontWeight(.heavy)
+//                                .frame(width: 130, height: 50)
+//                                .foregroundColor(Color.white)
+//                                .background(Color.red)
+//                                .clipShape(Capsule(style: .continuous))
+//                        }
                     }
                     .padding(.top)
                 SheetSettingsView(invaderMaxSpeed: $invaderMaxSpeed, invaderRows: $invaderRows)
@@ -55,10 +52,6 @@ struct ContentView: View {
                         }
                     }
                     else if newValue == customDetent {
-                        if gameLost {
-                            panelDetent = .medium
-                            return
-                        }
                         print("Settings panel slid down")
                         withAnimation {
                             gamePaused = false
@@ -66,45 +59,11 @@ struct ContentView: View {
                     }
                 }
             }
-        }
-    }
-    
-    func arGameLost() {
-        if gameLost { return }
-        print("Detected game loss from child view")
-        panelDetent = .medium
-        gameLost = true
     }
 }
 
-struct ARViewPort: UIViewRepresentable {
-    let parentView: any View
-    @Binding var invaderMaxSpeed: Float
-    @Binding var numberOfInvaderRows: Int
-    @Binding var gamePaused: Bool
-    
-    func makeUIView(context: Context) -> ARView {
-        let arView = SpatialView(frame: .zero)
-        arView.setup(parentView: parentView)
-        
-//        arView.debugOptions.insert(.showPhysics)
-        
-        return arView
-    }
-    
-    func updateUIView(_ uiView: ARView, context: Context) {
-        // Update bindings and state here
-        if let spatialView = uiView as? SpatialView {
-            Utilities.maxSpeed = self.invaderMaxSpeed
-            Utilities.numRows = self.numberOfInvaderRows
-            
-            spatialView.setInvader(shouldMove: !gamePaused)
-        }
+struct SheetTester_Previews: PreviewProvider {
+    static var previews: some View {
+        SheetTester()
     }
 }
-
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}
