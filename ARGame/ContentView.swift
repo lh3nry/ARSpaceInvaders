@@ -10,6 +10,7 @@ import RealityKit
 
 extension Notification.Name {
     static let weaponFiredEvent = Notification.Name("WeaponFiredEvent")
+    static let restartGameEvent = Notification.Name("RestartGameEvent")
 }
 
 struct ContentView: View {
@@ -21,6 +22,7 @@ struct ContentView: View {
     
     @State var gameLost: Bool = false
     @State var gamePaused: Bool = false
+    @State var gameReset: Bool = false
     
     let customDetent = PresentationDetent.height(200)
     
@@ -53,30 +55,46 @@ struct ContentView: View {
                         }
                     }
                     .padding(.top)
-                SheetSettingsView(invaderMaxSpeed: $invaderMaxSpeed, invaderRows: $invaderRows)
+                SheetSettingsView(invaderMaxSpeed: $invaderMaxSpeed, invaderRows: $invaderRows, gameResarted: $gameReset)
                 .presentationDetents([.medium, customDetent], selection: $panelDetent)
-                .onDisappear() { showUIPanel = true }
-                .onChange(of: panelDetent) {newValue in
-                    if newValue == .medium {
-                        print("Settings panel visible")
-                        withAnimation {
-                            gamePaused = true
-                        }
-                        gameStatus = gameLost ? "GAME OVER" : "GAME PAUSED"
-                    }
-                    else if newValue == customDetent {
-                        if gameLost {
-                            panelDetent = .medium
-                            return
-                        }
-                        print("Settings panel slid down")
-                        withAnimation {
-                            gamePaused = false
-                        }
-                        gameStatus = ""
+                .onDisappear() {
+                    showUIPanel = true
+                    if panelDetent == .medium {
+                        gamePaused = false
+                        selectedPanelDetent(changedTo: customDetent)
                     }
                 }
+                .onChange(of: panelDetent, perform: selectedPanelDetent(changedTo:))
             }
+            .onChange(of: gameReset) { newValue in
+                if newValue == true {
+                    gameReset = false
+                    gameLost = false
+                }
+                
+            }
+        }
+    }
+    
+    func selectedPanelDetent(changedTo newValue: PresentationDetent) {
+        if panelDetent != newValue { panelDetent = newValue}
+        if newValue == .medium {
+            print("Settings panel visible")
+            withAnimation {
+                gamePaused = true
+            }
+            gameStatus = gameLost ? "GAME OVER" : "GAME PAUSED"
+        }
+        else if newValue == customDetent {
+            if gameLost {
+                panelDetent = .medium
+                return
+            }
+            print("Settings panel slid down")
+            withAnimation {
+                gamePaused = false
+            }
+            gameStatus = ""
         }
     }
     
@@ -85,7 +103,6 @@ struct ContentView: View {
         print("Detected game loss from child view")
         panelDetent = .medium
         gameLost = true
-//        gameStatus = "GAME OVER"
     }
 }
 

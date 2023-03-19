@@ -14,6 +14,7 @@ struct SheetTester: View {
     @State var invaderRows: Int = 5
     
     @State var gamePaused: Bool = false
+    @State var gameReset: Bool = false
 
     let customDetent = PresentationDetent.height(200)
     
@@ -41,7 +42,7 @@ struct SheetTester: View {
 //                        }
                     }
                     .padding(.top)
-                SheetSettingsView(invaderMaxSpeed: $invaderMaxSpeed, invaderRows: $invaderRows)
+                SheetSettingsView(invaderMaxSpeed: $invaderMaxSpeed, invaderRows: $invaderRows, gameResarted: $gameReset)
                 .presentationDetents([.medium, customDetent], selection: $panelDetent)
                 .onDisappear() { showUIPanel = true }
                 .onChange(of: panelDetent) {newValue in

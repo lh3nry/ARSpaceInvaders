@@ -131,7 +131,8 @@ class SpatialView: ARView {
         doCollisionGroupSetup()
 //        doCubeSetup()
         NotificationCenter.default.addObserver(self, selector: #selector(self.fireWeapon), name: .weaponFiredEvent, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.restart), name: .restartGameEvent, object: nil)
+
         self.parentView = parentView as? ContentView
         
 #if targetEnvironment(simulator)
@@ -171,6 +172,13 @@ class SpatialView: ARView {
         }
         
         session.run(config)
+    }
+    
+    @objc func restart() {
+        scene.removeAnchor(boardAnchor!)
+        
+        doGameSetup()
+        doECSTestSetup()
     }
     
     func doGameSetup() {
@@ -228,14 +236,12 @@ class SpatialView: ARView {
         let xspacing = Utilities.spacing
         let yspacing = xspacing
         
-//        backgroundColor = .black
-
         let startZ = -16
-        for row in startZ...(startZ+Utilities.numRows) {
+        for row in startZ...(startZ+Utilities.numRows-1) {
             makeInvaderRow(onto: boardAnchor!, at: Float(row) * yspacing, withColumns: 9, withSpacing: xspacing)
         }
 
-        setInvader(shouldMove: true)
+//        setInvader(shouldMove: true)
     }
     
     @objc func fireWeapon() {
@@ -292,30 +298,27 @@ class SpatialView: ARView {
         let starting = cols % 2 > 0 ? 0 : -(spacing/2)
         
         for index in low...high {
-            let currNum = index + 3
-            
-//            let text = Utilities.getTextMesh(for: "\(currNum)")
- 
             entity = ModelEntity(mesh: .generateBox(size: 0.01),
                             materials: [UnlitMaterial()])
 
-            anchor.addChild(entity!, preservingWorldTransform: false)
-            entity?.setPosition(SIMD3(starting + Float(index) * spacing, 0, z), relativeTo: anchor)
+            if let unwrapped = entity {
+                anchor.addChild(unwrapped, preservingWorldTransform: false)
+                unwrapped.setPosition(SIMD3(starting + Float(index) * spacing, 0, z), relativeTo: anchor)
 
-            entity?.transform.rotation = simd_quatf(angle: .pi/4, axis: [-1,0,0])
-            entity?.name = "👾"
-
-            
-            let limits: [(Float, Float)] = generateLimits(
-                x: entity!.position.x,
-                z: z,
-                limitValue: Utilities.moveDistance,
-                limitValueVertical: Utilities.moveDistanceVertical)
-            print(limits)
-            print(entity!.position.x)
-            entity?.components[InvaderComponent.self] = InvaderComponent(limits: limits)
-            entity?.generateCollisionShapes(recursive: true)
-            entity?.collision?.filter = CollisionFilter(group: invaderGroup!, mask: bulletGroup!.union(gameLossGroup!))
+                unwrapped.transform.rotation = simd_quatf(angle: .pi/4, axis: [-1,0,0])
+                unwrapped.name = "👾"
+                
+                let limits: [(Float, Float)] = generateLimits(
+                    x: unwrapped.position.x,
+                    z: z,
+                    limitValue: Utilities.moveDistance,
+                    limitValueVertical: Utilities.moveDistanceVertical)
+                print(limits)
+                print(unwrapped.position.x)
+                unwrapped.components[InvaderComponent.self] = InvaderComponent(limits: limits)
+                unwrapped.generateCollisionShapes(recursive: true)
+                unwrapped.collision?.filter = CollisionFilter(group: invaderGroup!, mask: bulletGroup!.union(gameLossGroup!))
+            }
         }
     }
     

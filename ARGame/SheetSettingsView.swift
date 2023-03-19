@@ -10,6 +10,10 @@ import SwiftUI
 struct SheetSettingsView: View {
     @Binding var invaderMaxSpeed: Float
     @Binding var invaderRows: Int
+    @Binding var gameResarted: Bool
+    
+    @State var settingsChanged: Bool = false
+    
     var body: some View {
 //        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         NavigationView() {
@@ -30,14 +34,25 @@ struct SheetSettingsView: View {
                     }
                     .labelStyle(.titleOnly)
                     .pickerStyle(.segmented)
-                .padding()
-                }
-                Button("Restart") {
+                    .padding()
                     
                 }
+                Button("Restart") {
+                    NotificationCenter.default.post(Notification(name: .restartGameEvent))
+                    gameResarted = true
+                    settingsChanged = false
+                }
+                .foregroundColor(settingsChanged ? .red : .blue)
             }
             .navigationTitle(Text("Settings"))
+            .onChange(of: invaderRows) { _ in
+                settingsChanged = true
+            }
+            .onChange(of: invaderMaxSpeed) { _ in
+                settingsChanged = true
+            }
         }
+        
     }
 }
 
@@ -50,6 +65,9 @@ struct SheetSettingsView: View {
 
 struct SheetSettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SheetSettingsView(invaderMaxSpeed: .constant(0.1), invaderRows: .constant(5))
+        SheetSettingsView(
+            invaderMaxSpeed: .constant(0.1),
+            invaderRows: .constant(5),
+            gameResarted: .constant(false))
     }
 }
