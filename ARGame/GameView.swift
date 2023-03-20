@@ -311,6 +311,10 @@ class SpatialView: ARView {
         let starting = cols % 2 > 0 ? 0 : -(spacing/2)
         let modelCount = models.count - 1
         
+        // TODO: understand CustomMaterials and how to use metal to create emissive colors
+        // need to understand metal default library or GeometryModifiers and shaders
+//        let mtlLibrary = MTLCreateSystemDefaultDevice()!.makeDefaultLibrary()
+        
         for index in low...high {
             entity = models[Int.random(in: 1...modelCount)].clone(recursive: false)
 
@@ -318,9 +322,12 @@ class SpatialView: ARView {
                 anchor.addChild(unwrapped, preservingWorldTransform: false)
                 unwrapped.setPosition(SIMD3(starting + Float(index) * spacing, 0, z), relativeTo: anchor)
 
-                unwrapped.setScale(SIMD3(repeating: 1.1), relativeTo: unwrapped)
-//                unwrapped.transform.rotation = simd_quatf(angle: .pi/4, axis: [-1,0,0])
+                unwrapped.setScale(SIMD3(repeating: 1.5), relativeTo: unwrapped)
+                unwrapped.transform.rotation = simd_quatf(angle: .pi/4, axis: [-1,0,0])
                 unwrapped.name = "👾"
+                
+                var material = SimpleMaterial(color: .green, isMetallic: false)
+                unwrapped.model?.materials = [material]
                 
                 let limits: [(Float, Float)] = generateLimits(
                     x: unwrapped.position.x,

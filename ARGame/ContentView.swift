@@ -17,8 +17,8 @@ extension Notification.Name {
 struct ContentView: View {
     @State var showUIPanel = true
     @State var panelDetent = PresentationDetent.height(200)
-    @State var invaderMaxSpeed: Float = 0.2
-    @State var invaderRows: Int = 5
+    @State var invaderMaxSpeed: Float = 0.1
+    @State var invaderRows: Int = 4
     @State var gameStatus: String?
     
     @State var gameLost: Bool = false
