@@ -309,16 +309,17 @@ class SpatialView: ARView {
         let high = cols/2
         
         let starting = cols % 2 > 0 ? 0 : -(spacing/2)
+        let modelCount = models.count - 1
         
         for index in low...high {
-            entity = ModelEntity(mesh: .generateBox(size: 0.01),
-                            materials: [UnlitMaterial()])
+            entity = models[Int.random(in: 1...modelCount)].clone(recursive: false)
 
             if let unwrapped = entity {
                 anchor.addChild(unwrapped, preservingWorldTransform: false)
                 unwrapped.setPosition(SIMD3(starting + Float(index) * spacing, 0, z), relativeTo: anchor)
 
-                unwrapped.transform.rotation = simd_quatf(angle: .pi/4, axis: [-1,0,0])
+                unwrapped.setScale(SIMD3(repeating: 1.1), relativeTo: unwrapped)
+//                unwrapped.transform.rotation = simd_quatf(angle: .pi/4, axis: [-1,0,0])
                 unwrapped.name = "👾"
                 
                 let limits: [(Float, Float)] = generateLimits(
@@ -326,7 +327,7 @@ class SpatialView: ARView {
                     z: z,
                     limitValue: Utilities.moveDistance,
                     limitValueVertical: Utilities.moveDistanceVertical)
-                print(limits)
+
                 print(unwrapped.position.x)
                 unwrapped.components[InvaderComponent.self] = InvaderComponent(limits: limits)
                 unwrapped.generateCollisionShapes(recursive: true)
