@@ -51,7 +51,7 @@
                           "material",
                           {
                             "typeName" : "String",
-                            "value" : "plastic"
+                            "value" : "clearCoatPaint"
                           }
                         ],
                         [
@@ -59,9 +59,9 @@
                           {
                             "typeName" : "double4",
                             "value" : [
-                              0.93335074186325073,
-                              0.93335074186325073,
-                              0.93335074186325073,
+                              0.3333333432674408,
+                              1,
+                              1,
                               1
                             ]
                           }
@@ -144,7 +144,7 @@
                           "material",
                           {
                             "typeName" : "String",
-                            "value" : "plastic"
+                            "value" : "clearCoatPaint"
                           }
                         ],
                         [
@@ -152,9 +152,9 @@
                           {
                             "typeName" : "double4",
                             "value" : [
-                              0.93335074186325073,
-                              0.93335074186325073,
-                              0.93335074186325073,
+                              0.3333333432674408,
+                              1,
+                              1,
                               1
                             ]
                           }
@@ -237,7 +237,7 @@
                           "material",
                           {
                             "typeName" : "String",
-                            "value" : "plastic"
+                            "value" : "clearCoatPaint"
                           }
                         ],
                         [
@@ -245,9 +245,9 @@
                           {
                             "typeName" : "double4",
                             "value" : [
-                              0.93335074186325073,
-                              0.93335074186325073,
-                              0.93335074186325073,
+                              0.3333333432674408,
+                              1,
+                              1,
                               1
                             ]
                           }
@@ -323,7 +323,7 @@
                           "material",
                           {
                             "typeName" : "String",
-                            "value" : "plastic"
+                            "value" : "clearCoatPaint"
                           }
                         ],
                         [
@@ -331,9 +331,9 @@
                           {
                             "typeName" : "double4",
                             "value" : [
-                              0.93335074186325073,
-                              0.93335074186325073,
-                              0.93335074186325073,
+                              0.3333333432674408,
+                              1,
+                              1,
                               1
                             ]
                           }
@@ -389,7 +389,93 @@
                     }
                   },
                   "EE483F41-E98C-453A-B108-C4BE5D228A1E" : null,
-                  "FCE2394C-789D-4B87-9DD0-27E48011A1D4" : null
+                  "FCE2394C-789D-4B87-9DD0-27E48011A1D4" : null,
+                  "FD308D45-B982-41E2-A0E4-FE60DB8C9F26" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "depth",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.51000000000000001
+                          }
+                        ],
+                        [
+                          "height",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.002
+                          }
+                        ],
+                        [
+                          "material",
+                          {
+                            "typeName" : "String",
+                            "value" : "standard"
+                          }
+                        ],
+                        [
+                          "materialColor",
+                          {
+                            "typeName" : "double4",
+                            "value" : [
+                              0,
+                              0,
+                              0,
+                              1
+                            ]
+                          }
+                        ],
+                        [
+                          "type",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ],
+                        [
+                          "width",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.31
+                          }
+                        ]
+                      ],
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.CoreAssetFactories.PrimitiveShapeAssetFactory",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "B7421C45-A447-417A-9949-A76C3CDF17BF"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                      ]
+                    }
+                  }
                 },
                 "factory" : null,
                 "runtimeAttributes" : [
