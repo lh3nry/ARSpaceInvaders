@@ -176,6 +176,14 @@ struct ARViewPort: UIViewRepresentable {
         let arView = SpatialView(frame: .zero)
         arView.setup(parentView: parentView, models: models)
         
+        arView.renderOptions = [.disableMotionBlur,
+                                .disableDepthOfField,
+                                .disablePersonOcclusion,
+                                .disableGroundingShadows,
+                                .disableFaceMesh,
+                                .disableHDR]
+
+        
 //        arView.debugOptions.insert(.showPhysics)
         
         return arView
